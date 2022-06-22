@@ -6,7 +6,7 @@ export interface Props {
 
 const Layout = (props: Props) => {
   return (
-    <div>
+    <div className='w-full'>
       <MobileNavBar />
       {props.children}
     </div>

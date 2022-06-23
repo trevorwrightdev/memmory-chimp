@@ -53,6 +53,7 @@ const GridGame = (): JSX.Element => {
   }
   const [gridItems, setGridItems] = useState<Square[]>(getGridItems())
   const [score, setScore] = useState<number>(0)
+  const [highScore, setHighScore] = useState<number>(0)
 
   const squareCount = useRef<number>(START_SQUARE_COUNT)
   const correctIndexes = useRef<number[]>([])
@@ -149,6 +150,28 @@ const GridGame = (): JSX.Element => {
     setShowLossMenu(true)
   }
 
+  useEffect(() => {
+    // This is done so we reset the score after the menu is removed so we don't see a blink into 0 before the fade is complete
+    if (removeMenu) {
+      setScore(0)
+    }
+  }, [removeMenu])
+
+  useEffect(() => {
+    const highScore: string | null = localStorage.getItem('gridScore')
+
+    // set high score initial value 
+    if (highScore !== null) {
+      setHighScore(parseInt(highScore))
+    }
+
+    if (highScore !== null && score > parseInt(highScore)) {
+      setHighScore(score)
+      localStorage.setItem('gridScore', score.toString())
+    }
+
+  }, [score])
+
   return (
     <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
       <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
@@ -170,8 +193,9 @@ const GridGame = (): JSX.Element => {
 
                 setGridItems(newSquares)
               } else if (correctIndexes.current.length === 1) {
-                // If this is the last square, play increment the count and play next level
+                // If this is the last square, play increment the count, increase score, and play next level
                 squareCount.current++
+                setScore(score + 1)
                 playLevel()
               }
               
@@ -188,15 +212,16 @@ const GridGame = (): JSX.Element => {
       </div>
       {!removeMenu && <motion.div animate={fadeMenu ? { opacity: 0 } : { opacity: 1 }} transition={{duration: 0.5}} className='gap-2 flex flex-col justify-center items-center w-full h-full bg-black/20 absolute rounded-lg'>
         {showLossMenu && 
-          <div className='text-lg h-52 w-60 flex flex-col items-center bg-lime-400 rounded-lg p-1'>
+          <div className='text-lg w-[70%] flex flex-col items-center bg-lime-400 rounded-lg p-1'>
             <h1>you lost</h1>
             <div className='w-full flex flex-row'> 
               <div className='w-1/2 flex flex-col justify-center items-center'>
                 <h1 className='text-center'>your score:</h1>
-                <h1></h1>
+                <h1>{score}</h1>
               </div>
               <div className='w-1/2 flex flex-col justify-center items-center'>
                 <h1 className='text-center'>your best:</h1>
+                <h1>{highScore}</h1>
               </div>
             </div>
           </div>}

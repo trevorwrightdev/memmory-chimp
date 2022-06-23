@@ -1,16 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faNavicon } from "@fortawesome/free-solid-svg-icons"
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
 
-const NavBar = (): JSX.Element => {
+export interface Props {
+  toggleMenu: () => void
+  menuOpen: boolean
+}
 
-  const [menuOpen, setMenuOpen] = useState<boolean>(false)
-
-  const toggleMenu = ():void => {
-    console.log('clicking')
-    setMenuOpen(!menuOpen)
-  }
+const NavBar = (props: Props): JSX.Element => {
 
   return (
     <>
@@ -18,12 +15,12 @@ const NavBar = (): JSX.Element => {
         <div 
           className='bg-lime-400 flex flex-row-reverse justify-center items-center p-4 w-full h-20'
         >
-            <FontAwesomeIcon onClick={toggleMenu} icon={faNavicon} className='cursor-pointer w-[45px] h-full'/>
+            <FontAwesomeIcon onClick={props.toggleMenu} icon={faNavicon} className='cursor-pointer w-[45px] h-full'/>
             <h1 className='grow text-center text-[24px] underline'>memory chimp</h1>
             <div className='w-[45px] h-full'/>
         </div>
         <motion.div
-          animate={menuOpen ? { height: 'calc(100vh - 5rem)' } : { height: '0vh' }} 
+          animate={props.menuOpen ? { height: 'calc(100vh - 5rem)' } : { height: '0vh' }} 
           transition={{duration: 0.25}}
           className='bg-lime-400'
         >

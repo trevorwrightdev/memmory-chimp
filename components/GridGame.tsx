@@ -132,9 +132,8 @@ const GridGame = (): JSX.Element => {
 
           const click = (): void => {
             let number = parseInt(item.number)
-            console.log('number', number)
-            console.log('correct index', correctIndexes.current[0])
-            if (number === correctIndexes.current[0]) {
+            let correctNumber = parseInt(gridItems[correctIndexes.current[0]].number)
+            if (number === correctNumber) {
               console.log('good!')
             } else {
               console.log('bad...')

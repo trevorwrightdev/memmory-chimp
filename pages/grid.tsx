@@ -9,5 +9,5 @@ const Grid: NextPage = () => {
     </div>
   )
 }
-
+ 
 export default Grid

@@ -7,7 +7,7 @@ export interface Props {
 
 const Layout = (props: Props) => {
   return (
-    <div className='w-full min-h-screen'>
+    <div className='w-full min-h-[730px] relative'>
       <MobileNavBar />
       {props.children}
       <Footer />

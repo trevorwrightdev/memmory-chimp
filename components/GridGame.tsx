@@ -52,6 +52,7 @@ const GridGame = (): JSX.Element => {
     return items
   }
   const [gridItems, setGridItems] = useState<Square[]>(getGridItems())
+  const [score, setScore] = useState<number>(0)
 
   const squareCount = useRef<number>(START_SQUARE_COUNT)
   const correctIndexes = useRef<number[]>([])
@@ -188,9 +189,15 @@ const GridGame = (): JSX.Element => {
       {!removeMenu && <motion.div animate={fadeMenu ? { opacity: 0 } : { opacity: 1 }} transition={{duration: 0.5}} className='gap-2 flex flex-col justify-center items-center w-full h-full bg-black/20 absolute rounded-lg'>
         {showLossMenu && 
           <div className='text-lg h-52 w-60 flex flex-col items-center bg-lime-400 rounded-lg p-1'>
-            <h1>You lost.</h1>
+            <h1>you lost</h1>
             <div className='w-full flex flex-row'> 
-              
+              <div className='w-1/2 flex flex-col justify-center items-center'>
+                <h1 className='text-center'>your score:</h1>
+                <h1></h1>
+              </div>
+              <div className='w-1/2 flex flex-col justify-center items-center'>
+                <h1 className='text-center'>your best:</h1>
+              </div>
             </div>
           </div>}
         <div onClick={!fadeMenu ? startGame : undefined} className='cursor-pointer text-lg bg-lime-400 p-1 rounded-lg'>tap to play</div>

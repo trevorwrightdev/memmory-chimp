@@ -75,6 +75,8 @@ const GridGame = (): JSX.Element => {
       return {
         ...item,
         visible: false,
+        clickable: false,
+        number: '',
       }
     })
 
@@ -90,6 +92,7 @@ const GridGame = (): JSX.Element => {
     }
     correctIndexes.current = indexes
 
+    // Set correct state for the items to show
     for (let index in correctIndexes.current) {
       newSquares[indexes[index]] = {
         ...newSquares[indexes[index]],
@@ -134,19 +137,26 @@ const GridGame = (): JSX.Element => {
             let correctNumber = parseInt(gridItems[correctIndexes.current[0]].number)
             if (number === correctNumber) {
               
-              // Remove the first element of the correct indexes array
-              correctIndexes.current.shift()
-              // Make this square not clickable and not visible 
-              let newSquares: Square[] = [...gridItems]
-              newSquares[idx].clickable = false
-              newSquares[idx].visible = false
-              // I'm doing this because the number reappears for some reason 
-              newSquares[idx].number = ''
+              if (correctIndexes.current.length !== 1) {
+                // Remove the first element of the correct indexes array
+                correctIndexes.current.shift()
+                // Make this square not clickable and not visible 
+                let newSquares: Square[] = [...gridItems]
+                newSquares[idx].clickable = false
+                newSquares[idx].visible = false
+                // I'm doing this because the number reappears due to clickable becoming false again 
+                newSquares[idx].number = ''
 
-              setGridItems(newSquares)
-              console.log('good!')
+                setGridItems(newSquares)
+              } else if (correctIndexes.current.length === 1) {
+                // If this is the last square, play increment the count and play next level
+                squareCount.current++
+                playLevel()
+              }
+              
             } else {
-              console.log('bad...')
+              // Lose condition 
+
             }
           }
 

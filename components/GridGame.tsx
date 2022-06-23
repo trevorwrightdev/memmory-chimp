@@ -6,7 +6,11 @@ interface GridProps {
 }
 
 const GridItem = (props: GridProps): JSX.Element => {
-  return <div className='cursor-pointer bg-lime-600 w-full aspect-square rounded-lg' />
+  return (
+    <div className='grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg'>
+      {props.number}
+    </div>
+  )
 }
 
 const GridGame = (): JSX.Element => {
@@ -14,7 +18,7 @@ const GridGame = (): JSX.Element => {
   const getGridItems = (): JSX.Element[] => {
     const items: JSX.Element[] = []
     for (let i = 0; i < 35; i++) {
-      items.push(<GridItem key={i} />)
+      items.push(<GridItem key={i} number={i + 1}/>)
     }
     return items
   }

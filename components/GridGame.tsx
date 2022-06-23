@@ -180,8 +180,8 @@ const GridGame = (): JSX.Element => {
   }, [score])
 
   return (
-    <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
-      <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
+    <div className='md:w-[750px] w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
+      <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 md:grid-cols-7 md:grid-rows-5 absolute'>
         {gridItems.map((item, idx) => {
           const click = (): void => {
             let number = parseInt(item.number)

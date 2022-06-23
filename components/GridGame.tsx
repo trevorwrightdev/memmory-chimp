@@ -9,11 +9,13 @@ interface Square {
   number: string,
   visible: boolean,
   clickable: boolean,
+  onClick?: () => void,
 }
 
 const GridItem = (props: Square): JSX.Element => {
   return (
     <motion.div 
+      onClick={props.onClick}
       animate={props.visible ? {opacity: 1} : {opacity: 0}} 
       transition={{duration: 0.5}}
       className={`${props.clickable ? 'pointer-events-auto' : 'pointer-events-none'} grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg`}
@@ -127,8 +129,20 @@ const GridGame = (): JSX.Element => {
     <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
       <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
         {gridItems.map((item, idx) => {
+
+          const click = (): void => {
+            let number = parseInt(item.number)
+            console.log('number', number)
+            console.log('correct index', correctIndexes.current[0])
+            if (number === correctIndexes.current[0]) {
+              console.log('good!')
+            } else {
+              console.log('bad...')
+            }
+          }
+
           return (
-            <GridItem key={idx} number={item.number} visible={item.visible} clickable={item.clickable}/>
+            <GridItem onClick={click} key={idx} number={item.number} visible={item.visible} clickable={item.clickable}/>
           )
         })}
       </div>

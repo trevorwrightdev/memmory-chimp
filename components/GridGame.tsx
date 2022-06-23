@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 interface Square {
@@ -8,9 +8,9 @@ interface Square {
 
 const GridItem = (props: Square): JSX.Element => {
   return (
-    <div className='grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg'>
+    <motion.div animate={props.active ? {opacity: 1} : {opacity: 0}} className={`${props.active ? 'pointer-events-auto' : 'pointer-events-none'} grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg`}>
       {props.number}
-    </div>
+    </motion.div>
   )
 }
 
@@ -36,6 +36,17 @@ const GridGame = (): JSX.Element => {
 
   const startGame = (): void => {
     setFadeMenu(true)
+
+    // Set all square as inactive
+    let newSquares: Square[] = [...gridItems]
+    newSquares = newSquares.map((item) => {
+      return {
+        ...item,
+        active: false,
+      }
+    })
+
+    setGridItems(newSquares)
 
     setTimeout(() => {
       setRemoveMenu(true)

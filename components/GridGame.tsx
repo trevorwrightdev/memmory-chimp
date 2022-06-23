@@ -160,6 +160,14 @@ const GridGame = (): JSX.Element => {
   useEffect(() => {
     const highScore: string | null = localStorage.getItem('gridScore')
 
+    if (highScore === null) {
+      setHighScore(score)
+
+      if (score > 0) {
+        localStorage.setItem('gridScore', score.toString())
+      }
+    }
+
     // set high score initial value 
     if (highScore !== null) {
       setHighScore(parseInt(highScore))
@@ -169,13 +177,6 @@ const GridGame = (): JSX.Element => {
       setHighScore(score)
       localStorage.setItem('gridScore', score.toString())
     } 
-
-    if (highScore === null && score > 0) {
-      setHighScore(score)
-      localStorage.setItem('gridScore', score.toString())
-    }
-
-
   }, [score])
 
   return (

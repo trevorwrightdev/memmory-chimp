@@ -50,6 +50,7 @@ const GridGame = (): JSX.Element => {
   const [gridItems, setGridItems] = useState<Square[]>(getGridItems())
 
   const squareCount = useRef<number>(4)
+  const correctIndexes = useRef<number[]>([])
   const aboutToWait = useRef<boolean>(false)
 
   const startGame = (): void => {
@@ -85,8 +86,9 @@ const GridGame = (): JSX.Element => {
       } while (indexes.includes(randomNumber))
       indexes.push(randomNumber)
     }
+    correctIndexes.current = indexes
 
-    for (let index in indexes) {
+    for (let index in correctIndexes.current) {
       newSquares[indexes[index]] = {
         ...newSquares[indexes[index]],
         visible: true,

@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { faTruckMonster } from '@fortawesome/free-solid-svg-icons'
 
 const MAX_SQUARES = 35
+const WAIT_TIME = 5
 
 interface Square {
   number: string,
@@ -11,8 +13,17 @@ interface Square {
 
 const GridItem = (props: Square): JSX.Element => {
   return (
-    <motion.div animate={props.visible ? {opacity: 1} : {opacity: 0}} className={`${props.clickable ? 'pointer-events-auto' : 'pointer-events-none'} grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg`}>
-      {props.number}
+    <motion.div 
+      animate={props.visible ? {opacity: 1} : {opacity: 0}} 
+      transition={{duration: 0.5}}
+      className={`${props.clickable ? 'pointer-events-auto' : 'pointer-events-none'} grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg`}
+    >
+      <motion.span 
+        animate={props.clickable ? {opacity: 0} : {opacity: 1}}
+        transition={{duration: 0.25}}
+      >
+        {props.number}
+      </motion.span>
     </motion.div>
   )
 }
@@ -27,7 +38,7 @@ const GridGame = (): JSX.Element => {
     const items: Square[] = []
     for (let i = 0; i < MAX_SQUARES; i++) {
       const squareItem: Square = {
-        number: (i + 1).toString(),
+        number: '',
         visible: true,
         clickable: false,
       }
@@ -36,10 +47,10 @@ const GridGame = (): JSX.Element => {
     }
     return items
   }
-  const gridItems = useRef<Square[]>(getGridItems())
+  const [gridItems, setGridItems] = useState<Square[]>(getGridItems())
 
   const squareCount = useRef<number>(4)
-  const [render, setRender] = useState<boolean>(false)
+  const aboutToWait = useRef<boolean>(false)
 
   const startGame = (): void => {
     setFadeMenu(true)
@@ -54,9 +65,9 @@ const GridGame = (): JSX.Element => {
     }, 500)
   }
 
-  const fadeAllSquares = (): void => {
-    // Set all squares as inactive
-    let newSquares: Square[] = [...gridItems.current]
+  const playLevel = (): void => {
+    // * Set all squares as inactive
+    let newSquares: Square[] = [...gridItems]
     newSquares = newSquares.map((item) => {
       return {
         ...item,
@@ -64,12 +75,8 @@ const GridGame = (): JSX.Element => {
       }
     })
 
-    gridItems.current = newSquares
-  }
-
-  const showRandomSquares = (): void => {
+    // * Show the correct squares
     const indexes: number[] = []
-
     // Get the random indexes
     for (let i = 0; i < squareCount.current; i++) {
       let randomNumber
@@ -79,31 +86,45 @@ const GridGame = (): JSX.Element => {
       indexes.push(randomNumber)
     }
 
-    let newSquares: Square[] = [...gridItems.current]
-    for (let index of indexes) {
-      newSquares[index] = {
-        ...newSquares[index],
+    for (let index in indexes) {
+      newSquares[indexes[index]] = {
+        ...newSquares[indexes[index]],
         visible: true,
-        number: index.toString()
+        number: (parseInt(index) + 1).toString()
       }
     }
-    gridItems.current = newSquares
+    aboutToWait.current = true
+    setGridItems(newSquares)
   }
 
-  const playLevel = (): void => {
-    fadeAllSquares()
-    showRandomSquares()
-    rerender()
-  }
+  useEffect(() => {
+    if (aboutToWait.current === false) return 
 
-  const rerender = (): void => {
-    setRender(!render)
-  }
+    aboutToWait.current = false
+    setTimeout(() => {
+      // Remove the numbers from everything 
+      let newSquares: Square[] = [...gridItems]
+      newSquares = newSquares.map((item) => {
+        if (item.visible) {
+          return {
+            ...item,
+            clickable: true,
+          }
+        } else {
+          return {
+            ...item,
+          }
+        }
+      })
+      setGridItems(newSquares)
+    }, WAIT_TIME * 1000)
+
+  }, [gridItems])
 
   return (
     <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
       <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
-        {gridItems.current.map((item, idx) => {
+        {gridItems.map((item, idx) => {
           return (
             <GridItem key={idx} number={item.number} visible={item.visible} clickable={item.clickable}/>
           )

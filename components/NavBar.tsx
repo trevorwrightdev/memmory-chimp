@@ -36,12 +36,12 @@ const NavBar = (props: Props): JSX.Element => {
         >
           {props.menuOpen && <>
             <div onClick={() => redirect('grid')} className='flex flex-col justify-center items-center'>
-              <div className='bg-lime-600 w-24 rounded-lg aspect-square grid place-items-center'>
+              <div className='bg-lime-600 w-24 rounded-lg aspect-square grid place-items-center cursor-pointer'>
                 <FontAwesomeIcon className='text-[32px]' icon={faBorderAll} />
               </div>
               <h1>grid</h1>
             </div>
-            <div onClick={() => redirect('pi')} className='flex flex-col justify-center items-center'>
+            <div onClick={() => redirect('pi')} className='flex flex-col justify-center items-center cursor-pointer'>
               <div className='bg-lime-600 w-24 rounded-lg aspect-square grid place-items-center'>
                 <FontAwesomeIcon className='text-[32px]' icon={faCircle} />
               </div>

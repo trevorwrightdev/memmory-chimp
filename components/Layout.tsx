@@ -11,6 +11,23 @@ const Layout = (props: Props): JSX.Element => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
 
   useEffect(() => {
+    const handleResize = ():void => {
+      const width: number = window.innerWidth
+
+      if (width >= 768) {
+        // close menu if its open
+        if (mobileMenuOpen) {
+          setMobileMenuOpen(false)
+        }
+
+      }
+    }
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [mobileMenuOpen])
+
+  useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden'
     } else if (mobileMenuOpen === false){

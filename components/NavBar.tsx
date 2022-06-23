@@ -25,9 +25,9 @@ const NavBar = (props: Props): JSX.Element => {
         <div 
           className='bg-lime-400 flex flex-row-reverse justify-center items-center p-4 w-full h-20'
         >
-            <FontAwesomeIcon onClick={() => props.setMenu(!props.menuOpen)} icon={faNavicon} className='cursor-pointer w-[45px] h-full'/>
+            <FontAwesomeIcon onClick={() => props.setMenu(!props.menuOpen)} icon={faNavicon} className='cursor-pointer w-[45px] h-full md:hidden'/>
             <h1 className='grow text-center text-[24px] underline'>memory chimp</h1>
-            <div className='w-[45px] h-full'/>
+            <div className='w-[45px] h-full md:hidden'/>
         </div>
         <motion.div
           animate={props.menuOpen ? { height: 'calc(100vh - 5rem)' } : { height: '0px' }} 

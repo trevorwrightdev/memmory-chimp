@@ -154,9 +154,9 @@ const GridGame = (): JSX.Element => {
                 playLevel()
               }
               
-            } else {
+            } else if (number !== correctNumber) {
               // Lose condition 
-
+              
             }
           }
 

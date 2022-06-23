@@ -1,11 +1,17 @@
 import type { NextPage } from 'next'
-import GridGame from '../components/GridGame'
-
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 const Home: NextPage = () => {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.pathname === '/') router.push('/grid')
+  }, [])
+
   return (
-    <div className='flex flex-col gap-2 justify-center items-center'>
-      <h1>grid</h1>
-      <GridGame />
+    <div>
+
     </div>
   )
 }

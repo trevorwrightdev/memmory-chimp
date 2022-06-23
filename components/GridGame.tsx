@@ -24,9 +24,12 @@ const GridGame = (): JSX.Element => {
   }
 
   return (
-    <div className={`w-[350px] h-[550px] bg-lime-500 rounded-lg`}>
-      <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7'>
+    <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
+      <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
         {getGridItems()}
+      </div>
+      <div className='flex flex-col justify-center items-center w-full h-full bg-black opacity-20 absolute rounded-lg'>
+        <h1>tap to play</h1>
       </div>
     </div>
   )

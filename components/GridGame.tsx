@@ -129,11 +129,21 @@ const GridGame = (): JSX.Element => {
     <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
       <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
         {gridItems.map((item, idx) => {
-
           const click = (): void => {
             let number = parseInt(item.number)
             let correctNumber = parseInt(gridItems[correctIndexes.current[0]].number)
             if (number === correctNumber) {
+              
+              // Remove the first element of the correct indexes array
+              correctIndexes.current.shift()
+              // Make this square not clickable and not visible 
+              let newSquares: Square[] = [...gridItems]
+              newSquares[idx].clickable = false
+              newSquares[idx].visible = false
+              // I'm doing this because the number reappears for some reason 
+              newSquares[idx].number = ''
+
+              setGridItems(newSquares)
               console.log('good!')
             } else {
               console.log('bad...')

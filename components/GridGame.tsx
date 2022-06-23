@@ -4,6 +4,7 @@ import { faTruckMonster } from '@fortawesome/free-solid-svg-icons'
 
 const MAX_SQUARES = 35
 const WAIT_TIME = 5
+const START_SQUARE_COUNT = 4
 
 interface Square {
   number: string,
@@ -18,7 +19,7 @@ const GridItem = (props: Square): JSX.Element => {
       onClick={props.onClick}
       animate={props.visible ? {opacity: 1} : {opacity: 0}} 
       transition={{duration: 0.5}}
-      className={`${props.clickable ? 'pointer-events-auto' : 'pointer-events-none'} grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg`}
+      className={`${props.clickable ? 'pointer-events-auto' : 'pointer-events-none'} select-none grid place-items-center cursor-pointer bg-lime-600 w-full aspect-square rounded-lg`}
     >
       <motion.span 
         animate={props.clickable ? {opacity: 0} : {opacity: 1}}
@@ -34,6 +35,7 @@ const GridGame = (): JSX.Element => {
 
   const [fadeMenu, setFadeMenu] = useState<boolean>(false)
   const [removeMenu, setRemoveMenu] = useState<boolean>(false)
+  const [showLossMenu, setShowLossMenu] = useState<boolean>(false)
 
   // Grid item data
   const getGridItems = (): Square[] => {
@@ -51,7 +53,7 @@ const GridGame = (): JSX.Element => {
   }
   const [gridItems, setGridItems] = useState<Square[]>(getGridItems())
 
-  const squareCount = useRef<number>(4)
+  const squareCount = useRef<number>(START_SQUARE_COUNT)
   const correctIndexes = useRef<number[]>([])
   const aboutToWait = useRef<boolean>(false)
 
@@ -128,6 +130,24 @@ const GridGame = (): JSX.Element => {
 
   }, [gridItems])
 
+  const lose = (): void => {
+    // bring back all squares and make them unclickable with no numbers
+    let newSquares = [...gridItems]
+    newSquares = newSquares.map((item) => {
+      return {
+        ...item,
+        number: '',
+        clickable: false,
+        visible: true,
+      }
+    })
+    squareCount.current = START_SQUARE_COUNT
+    setGridItems(newSquares)
+    setFadeMenu(false)
+    setRemoveMenu(false)
+    setShowLossMenu(true)
+  }
+
   return (
     <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
       <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
@@ -156,7 +176,7 @@ const GridGame = (): JSX.Element => {
               
             } else if (number !== correctNumber) {
               // Lose condition 
-              
+              lose()
             }
           }
 
@@ -165,7 +185,14 @@ const GridGame = (): JSX.Element => {
           )
         })}
       </div>
-      {!removeMenu && <motion.div animate={fadeMenu && { opacity: 0 }} transition={{duration: 0.5}} className='grid place-items-center w-full h-full bg-black/20 absolute rounded-lg'>
+      {!removeMenu && <motion.div animate={fadeMenu ? { opacity: 0 } : { opacity: 1 }} transition={{duration: 0.5}} className='gap-2 flex flex-col justify-center items-center w-full h-full bg-black/20 absolute rounded-lg'>
+        {showLossMenu && 
+          <div className='text-lg h-52 w-60 flex flex-col items-center bg-lime-400 rounded-lg p-1'>
+            <h1>You lost.</h1>
+            <div className='w-full flex flex-row'> 
+              
+            </div>
+          </div>}
         <div onClick={!fadeMenu ? startGame : undefined} className='cursor-pointer text-lg bg-lime-400 p-1 rounded-lg'>tap to play</div>
       </motion.div>}
     </div>

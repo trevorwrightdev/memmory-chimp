@@ -43,18 +43,8 @@ const GridGame = (): JSX.Element => {
   const startGame = (): void => {
     setFadeMenu(true)
 
-    // Set all square as inactive
-    let newSquares: Square[] = gridItems
-    newSquares = newSquares.map((item) => {
-      return {
-        ...item,
-        visible: false,
-      }
-    })
-
-    setGridItems(newSquares)
-
-    console.log(getRandomIndexes())
+    // Start level
+    playLevel()
 
     setTimeout(() => {
       setRemoveMenu(true)
@@ -78,6 +68,24 @@ const GridGame = (): JSX.Element => {
     }
 
     return indexes
+  }
+
+  const fadeAllSquares = (): void => {
+    // Set all squares as inactive
+    let newSquares: Square[] = gridItems
+    newSquares = newSquares.map((item) => {
+      return {
+        ...item,
+        visible: false,
+      }
+    })
+
+    setGridItems(newSquares)
+  }
+
+  const playLevel = (): void => {
+    fadeAllSquares()
+    
   }
 
   return (

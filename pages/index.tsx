@@ -3,7 +3,8 @@ import GridGame from '../components/GridGame'
 
 const Home: NextPage = () => {
   return (
-    <div className='flex flex-col justify-center items-center pt-10'>
+    <div className='flex flex-col gap-2 justify-center items-center pt-10'>
+      <h1>grid</h1>
       <GridGame />
     </div>
   )

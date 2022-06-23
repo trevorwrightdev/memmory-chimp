@@ -168,7 +168,13 @@ const GridGame = (): JSX.Element => {
     if (highScore !== null && score > parseInt(highScore)) {
       setHighScore(score)
       localStorage.setItem('gridScore', score.toString())
+    } 
+
+    if (highScore === null && score > 0) {
+      setHighScore(score)
+      localStorage.setItem('gridScore', score.toString())
     }
+
 
   }, [score])
 

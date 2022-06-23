@@ -1,4 +1,4 @@
-import MobileNavBar from "./MobileNavBar"
+import NavBar from "./NavBar"
 import Footer from "./Footer"
 
 export interface Props {
@@ -8,7 +8,7 @@ export interface Props {
 const Layout = (props: Props): JSX.Element => {
   return (
     <div className='w-full min-h-[730px] relative'>
-      <MobileNavBar />
+      <NavBar />
       {props.children}
       <Footer />
     </div>

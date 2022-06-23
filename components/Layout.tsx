@@ -20,7 +20,7 @@ const Layout = (props: Props): JSX.Element => {
 
   return (
     <div className='w-full min-h-[730px] relative'>
-      <NavBar toggleMenu={() => setMobileMenuOpen(!mobileMenuOpen)} menuOpen={mobileMenuOpen}/>
+      <NavBar setMenu={setMobileMenuOpen} menuOpen={mobileMenuOpen}/>
       {props.children}
       <Footer />
     </div>

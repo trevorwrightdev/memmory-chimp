@@ -36,9 +36,10 @@ const GridGame = (): JSX.Element => {
     }
     return items
   }
-  const [gridItems, setGridItems] = useState<Square[]>(getGridItems())
+  const gridItems = useRef<Square[]>(getGridItems())
 
   const squareCount = useRef<number>(4)
+  const [render, setRender] = useState<boolean>(false)
 
   const startGame = (): void => {
     setFadeMenu(true)
@@ -53,26 +54,9 @@ const GridGame = (): JSX.Element => {
     }, 500)
   }
 
-  const getRandomIndexes = (): number[] => {
-    const indexes: number[] = []
-
-    for (let i = 0; i < squareCount.current; i++) {
-
-      let randomNumber
-      do {
-        randomNumber = Math.floor(Math.random() * ((MAX_SQUARES + 1) - 0) + 0);
-      } while (indexes.includes(randomNumber))
-
-      indexes.push(randomNumber)
-
-    }
-
-    return indexes
-  }
-
   const fadeAllSquares = (): void => {
     // Set all squares as inactive
-    let newSquares: Square[] = gridItems
+    let newSquares: Square[] = [...gridItems.current]
     newSquares = newSquares.map((item) => {
       return {
         ...item,
@@ -80,18 +64,46 @@ const GridGame = (): JSX.Element => {
       }
     })
 
-    setGridItems(newSquares)
+    gridItems.current = newSquares
+  }
+
+  const showRandomSquares = (): void => {
+    const indexes: number[] = []
+
+    // Get the random indexes
+    for (let i = 0; i < squareCount.current; i++) {
+      let randomNumber
+      do {
+        randomNumber = Math.floor(Math.random() * (MAX_SQUARES - 0) + 0);
+      } while (indexes.includes(randomNumber))
+      indexes.push(randomNumber)
+    }
+
+    let newSquares: Square[] = [...gridItems.current]
+    for (let index of indexes) {
+      newSquares[index] = {
+        ...newSquares[index],
+        visible: true,
+        number: index.toString()
+      }
+    }
+    gridItems.current = newSquares
   }
 
   const playLevel = (): void => {
     fadeAllSquares()
-    
+    showRandomSquares()
+    rerender()
+  }
+
+  const rerender = (): void => {
+    setRender(!render)
   }
 
   return (
     <div className='w-[350px] h-[550px] bg-lime-500 rounded-lg relative'>
       <div className='place-items-center w-full h-full p-3 gap-2 grid grid-cols-5 grid-rows-7 absolute'>
-        {gridItems.map((item, idx) => {
+        {gridItems.current.map((item, idx) => {
           return (
             <GridItem key={idx} number={item.number} visible={item.visible} clickable={item.clickable}/>
           )

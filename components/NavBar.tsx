@@ -18,14 +18,14 @@ const NavBar = (): JSX.Element => {
         <div 
           className='bg-lime-400 flex flex-row-reverse justify-center items-center p-4 w-full h-20'
         >
-            <FontAwesomeIcon onClick={toggleMenu} icon={faNavicon} className='cursor-pointer w-[45px] h-12'/>
+            <FontAwesomeIcon onClick={toggleMenu} icon={faNavicon} className='cursor-pointer w-[45px] h-full'/>
             <h1 className='grow text-center text-[24px] underline'>memory chimp</h1>
             <div className='w-[45px] h-full'/>
         </div>
         <motion.div
           animate={menuOpen ? { height: 'calc(100vh - 5rem)' } : { height: '0vh' }} 
           transition={{duration: 0.25}}
-          className='bg-red-500 mt-[5rem] fixed'
+          className='bg-lime-400'
         >
 
         </motion.div>

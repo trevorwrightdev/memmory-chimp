@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { faTruckMonster } from '@fortawesome/free-solid-svg-icons'
 
 const MAX_SQUARES = 35
 const WAIT_TIME = 5
@@ -187,7 +186,6 @@ const GridGame = (): JSX.Element => {
             let number = parseInt(item.number)
             let correctNumber = parseInt(gridItems[correctIndexes.current[0]].number)
             if (number === correctNumber) {
-              
               if (correctIndexes.current.length !== 1) {
                 // Remove the first element of the correct indexes array
                 correctIndexes.current.shift()
